@@ -1,0 +1,65 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+void registerUser() {
+    string username, password, u, p;
+    cout << "Enter username: ";
+    cin >> username;
+    cout << "Enter password: ";
+    cin >> password;
+
+    ifstream inFile("users.txt");
+    while (inFile >> u >> p) {
+        if (u == username) {
+            cout << "Username already exists\n";
+            inFile.close();
+            return;
+        }
+    }
+    inFile.close();
+
+    ofstream outFile("users.txt", ios::app);
+    outFile << username << " " << password << endl;
+    outFile.close();
+
+    cout << "Registration successful\n";
+}
+
+void login() {
+    string username, password, u, p;
+    cout << "Enter username: ";
+    cin >> username;
+    cout << "Enter password: ";
+    cin >> password;
+
+    ifstream file("users.txt");
+    while (file >> u >> p) {
+        if (u == username && p == password) {
+            cout << "Login successful\n";
+            file.close();
+            return;
+        }
+    }
+    file.close();
+
+    cout << "Invalid login\n";
+}
+
+int main() {
+    int choice;
+
+    while (true) {
+        cout << "\n1. Register\n2. Login\n3. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        if (choice == 1) registerUser();
+        else if (choice == 2) login();
+        else if (choice == 3) break;
+        else cout << "Invalid choice\n";
+    }
+
+
+    return 0;
+}
